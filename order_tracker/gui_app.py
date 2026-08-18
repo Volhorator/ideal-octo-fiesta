@@ -185,10 +185,12 @@ class OrdersApp:
             key_func = self._get_sort_key(self.sort_column)
             filtered_orders = sorted(filtered_orders, key=key_func, reverse=reverse)
         
-        # Заполняем таблицу
+        # Заполняем таблицу, сохраняя связь с данными через item id
         for order in filtered_orders:
             values = tuple(str(order.get(col[0], "")) for col in COLUMNS)
-            self.tree.insert('', tk.END, values=values)
+            # Используем номер заказа как уникальный идентификатор для item
+            item_id = order.get("order_number", "") or id(order)
+            self.tree.insert('', tk.END, iid=item_id, values=values)
     
     def _apply_filter(self, orders_list):
         """Применение фильтра по номеру заказа."""
@@ -233,12 +235,28 @@ class OrdersApp:
         if not selection:
             return None
         
-        # Получаем значения из выбранной строки
-        values = self.tree.item(selection[0])['values']
+        # Получаем iid (идентификатор) выбранного элемента
+        item_id = selection[0]
         
-        # Ищем соответствующий заказ в списке
-        order_number = values[0]  # Первый столбец - номер заказа
-        return find_order_by_number(order_number)
+        # Если iid соответствует номеру заказа, ищем по нему
+        order = find_order_by_number(item_id)
+        if order:
+            return order
+        
+        # Если не нашли по iid, пробуем найти по значениям (для пустых номеров)
+        values = self.tree.item(item_id)['values']
+        for order in self.orders:
+            match = True
+            for i, col in enumerate(COLUMNS):
+                expected = str(order.get(col[0], ""))
+                actual = str(values[i]) if i < len(values) else ""
+                if expected != actual:
+                    match = False
+                    break
+            if match:
+                return order
+        
+        return None
     
     def _add_order(self):
         """Добавление нового заказа."""

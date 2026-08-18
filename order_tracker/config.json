@@ -1,0 +1,6 @@
+{
+  "double_commander_command": "doublecmd",
+  "search_url": "http://intranet.example.com/search",
+  "search_post_data_template": "{\"fio\": \"{query}\"}",
+  "orders_file_path": "./orders.json"
+}

@@ -1,0 +1,25 @@
+[
+  {
+    "order_number": "123",
+    "order_type": "Изготовление",
+    "drawing_number": "Чертёж-01",
+    "name": "Деталь",
+    "quantity": 10,
+    "due_date": "2025-01-15",
+    "customer": "Иванов И.И.",
+    "technologist": "Петров П.П.",
+    "comment": "Срочно",
+    "folder_path": "D:/docs/orders/123"
+  },
+  {
+    "order_number": "124",
+    "order_type": "Ремонт",
+    "drawing_number": "Чертёж-02",
+    "name": "Узел",
+    "quantity": 5,
+    "due_date": "2025-02-20",
+    "customer": "Сидоров С.С.",
+    "technologist": "Кузнецов К.К.",
+    "comment": ""
+  }
+]
